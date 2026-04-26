@@ -3,35 +3,14 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-22.04
+    container:
+      image: kivy/buildozer:latest
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install -y python3-pip python3-dev git zip unzip openjdk-17-jdk \
-          autoconf libtool pkg-config zlib1g-dev libncurses5-dev \
-          cmake libffi-dev libssl-dev gettext autopoint lld
-        pip3 install buildozer cython==0.29.37
-
-    - name: Setup Android SDK
-      run: |
-        SDK=/usr/local/lib/android/sdk
-        yes | $SDK/cmdline-tools/latest/bin/sdkmanager --licenses || true
-        yes | $SDK/cmdline-tools/latest/bin/sdkmanager \
-          "build-tools;33.0.2" "platforms;android-33" "platform-tools" || true
-        mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
-        cp $SDK/cmdline-tools/latest/bin/sdkmanager \
-           ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
-        cp -r $SDK/build-tools \
-           ~/.buildozer/android/platform/android-sdk/build-tools
-        cp -r $SDK/platforms \
-           ~/.buildozer/android/platform/android-sdk/platforms
-        cp -r $SDK/platform-tools \
-           ~/.buildozer/android/platform/android-sdk/platform-tools
-
     - name: Build APK
-      run: buildozer android debug
+      run: |
+        buildozer android debug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
