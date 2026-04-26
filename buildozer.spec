@@ -9,7 +9,7 @@ source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
 
 # Libraries needed on Android
-requirements = python3,kivy,pandas,openpyxl,xlrd,pillow,pypdf
+requirements = python3,kivy==2.2.1,pandas,openpyxl,xlrd,pillow,pypdf
 
 # Android settings
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE
