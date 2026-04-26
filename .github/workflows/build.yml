@@ -8,6 +8,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Fix dependencies
+      run: |
+        apt-get update -qq
+        apt-get install -y gettext autopoint
+        yes | sdkmanager "build-tools;33.0.2" "platforms;android-33" || true
+
     - name: Build APK
       env:
         BUILDOZER_WARN_ON_ROOT: 0
