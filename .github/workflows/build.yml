@@ -12,7 +12,7 @@ jobs:
         sudo apt install -y python3-pip git zip unzip openjdk-17-jdk \
           autoconf libtool pkg-config zlib1g-dev libncurses5-dev \
           cmake libffi-dev libssl-dev gettext autopoint
-        pip3 install buildozer cython
+        pip3 install buildozer cython==0.29.37
 
     - name: Accept Android SDK licenses
       run: |
