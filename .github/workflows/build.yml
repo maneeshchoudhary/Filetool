@@ -14,16 +14,18 @@ jobs:
           cmake libffi-dev libssl-dev gettext autopoint lld
         pip3 install buildozer cython==0.29.37
 
-    - name: Accept Android SDK licenses
+    - name: Setup Android SDK build-tools
       run: |
-        mkdir -p ~/.android
-        echo "count=0" > ~/.android/repositories.cfg
         yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses || true
-        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;33.0.2" "platforms;android-33" "platform-tools" || true
+        yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager \
+          "build-tools;33.0.2" \
+          "platforms;android-33" \
+          "platform-tools" || true
+        mkdir -p ~/.buildozer/android/platform
+        ln -sf /usr/local/lib/android/sdk \
+          ~/.buildozer/android/platform/android-sdk
 
     - name: Build APK
-      env:
-        ANDROIDSDK: /usr/local/lib/android/sdk
       run: buildozer android debug
 
     - name: Upload APK
